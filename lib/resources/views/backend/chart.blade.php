@@ -13,7 +13,7 @@
           //PHP Code 
           <?php
               foreach($list as $channel):
-                $key = "AIzaSyCrr67oZdHZ3tX4VQOIdfmFT9107zXcEDM";
+                $key = "AIzaSyB5H7UnizCaiC_gTx6t0Mq_mBdNUMDx9Nw";
                 $base_url = "https://www.googleapis.com/youtube/v3/";
                 $maxResult = 10;
 
@@ -26,8 +26,12 @@
                 //$video1 = json_decode(file_get_contents($APA_URL));
                 //echo "<pre>";
                 //print_r($video);
-                foreach($video->items as $video):
-                    $key = "AIzaSyCrr67oZdHZ3tX4VQOIdfmFT9107zXcEDM";
+                
+
+                  foreach($video->items as $video):
+                    if(isset($video->id->videoId)){
+
+                    $key = "AIzaSyB5H7UnizCaiC_gTx6t0Mq_mBdNUMDx9Nw";
                     $base_url = "https://www.googleapis.com/youtube/v3/";
                     $APA_URL = "https://www.googleapis.com/youtube/v3/videos?id=".$video->id->videoId."&part=statistics&part=contentDetails&key=".$key;
                     $video1 = json_decode(file_get_contents($APA_URL));
@@ -38,7 +42,8 @@
                     $formated_stamp = str_replace(array("T","Z"), array("/","S"),$stamp);
                     $step = explode("/",$formated_stamp);
                     $newDate = date("d-m-Y", strtotime($step[0]));
-                  foreach($video1->items as $video1):
+
+                      foreach($video1->items as $video1):
 
 
 
@@ -46,8 +51,10 @@
            ['<?php echo $newDate.'/'.$step[1];?>',<?php echo $video1->statistics->likeCount;?>,
         <?php echo $video1->statistics->dislikeCount;?>], 
           <?php  
+                      endforeach;
+                    }
                   endforeach;
-                endforeach;
+                
     
             endforeach;
 
@@ -81,6 +88,7 @@
     <base href="{{asset('public/youtube')}}/">
 
     <link rel="stylesheet" href="style2.css">
+    
 
 
   </head>
@@ -89,8 +97,14 @@
         <div class="col-lg-12">
             <h1 class="page-header">youtube Analysis</h1>
         </div>
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+      <div class="row">
+        <div class="col-xs-12 col-md-7 col-lg-12">
+          <div id="curve_chart" style="width: 900px; height: 500px"></div>
+        </div>
+      </div>
+      
     </div>
+    
     
   </body>
 </html>

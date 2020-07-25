@@ -13,13 +13,25 @@ class HomeController extends Controller
         return view('backend.basicPage',$data);
     }
     public function postHome(Request $request){
+
+        $this->validate($request,[
+            'channelname'=>'required|unique:channels,channel'
+        ],[
+            'channelname.unique'=>'channel is already added.',
+            'channelname.required'=>'Please, enter your channel.'
+
+        ]);
+
+
         $user = new Channel;
         $user->channel = $request->channelname;
         $step = explode("/",$request->channelname);
-
+        
         $user->id_channel = $step[4];
+
         $user->save();
-        return back();
+        
+        return back()->with('thanhcong','Added successfully !!!');
         //dd($user);
     }
 }
